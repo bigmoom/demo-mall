@@ -1,0 +1,8 @@
+# 基于哪个镜像
+FROM java:8
+# 绑定/tmp文件夹
+VOLUME /tmp
+# 将文件复制到容器中
+ADD demo-1.0-SNAPSHOT.jar demo.jar
+# 指定容器启动程序及参数
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/demo.jar"]

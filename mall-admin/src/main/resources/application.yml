@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: mall-admin
+  profiles:
+    active: dev #默认为开发环境
+

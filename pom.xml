@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.cwh</groupId>
+    <artifactId>mall</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>mall-mbg</module>
+    </modules>
+
+    <properties>
+        <!--dependencies.version -->
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <mall-mbg.version>0.0.1-SNAPSHOT</mall-mbg.version>
+        <mall-common.version>0.0.1-SNAPSHOT</mall-common.version>
+        <mysql-connector.version>8.0.24</mysql-connector.version>
+        <mybatis.version>2.2.0</mybatis.version>
+        <mybatis-generator.version>1.4.0</mybatis-generator.version>
+        <druid.version>1.2.5</druid.version>
+        <pagehelper.version>5.2.0</pagehelper.version>
+        <lombok.version>1.18.20</lombok.version>
+        <swagger2.version>3.0.0</swagger2.version>
+        <swagger-annotations.version>1.6.0</swagger-annotations.version>
+        <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
+        <redis.version>2.5.1</redis.version>
+        <jedis.version>3.6.0</jedis.version>
+        <spring-boot-configuration-processor.version>2.3.0.RELEASE</spring-boot-configuration-processor.version>
+
+        <!--plugins -->
+        <docker.version>1.2.2</docker.version>
+        <docker.host>http://192.168.56.129:2375</docker.host>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <!--模块依赖的版本控制-->
+    <dependencyManagement>
+        <dependencies>
+            <!--mall-mbg模块-->
+            <dependency>
+                <groupId>com.cwh.mall</groupId>
+                <artifactId>mall-mbg</artifactId>
+                <version>${mall-mbg.version}</version>
+            </dependency>
+            <!--mall-common模块-->
+            <dependency>
+                <groupId>com.cwh.mall</groupId>
+                <artifactId>mall-common</artifactId>
+                <version>${mall-common.version}</version>
+            </dependency>
+            <!--mysql数据库驱动-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector.version}</version>
+            </dependency>
+
+            <!--mybatis-->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <!--mybatis-generator-->
+            <dependency>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-core</artifactId>
+                <version>${mybatis-generator.version}</version>
+            </dependency>
+
+            <!--mybatis-pagehelper-->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+
+            <!--druid连接池-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!--lombok-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!--swagger3-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${swagger2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>swagger-bootstrap-ui</artifactId>
+                <version>${swagger-bootstrap-ui.version}</version>
+            </dependency>
+            <!--redis-->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${redis.version}</version>
+            </dependency>
+            <!--configuration-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${spring-boot-configuration-processor.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <!--插件管理-->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+
+                <!--<plugin>-->
+                <!--    &lt;!&ndash;docker部署&ndash;&gt;-->
+                <!--    <groupId>com.spotify</groupId>-->
+                <!--    <artifactId>docker-maven-plugin</artifactId>-->
+                <!--    <version>${docker.version}</version>-->
+                <!--    <executions>-->
+                <!--        <execution>-->
+                <!--            &lt;!&ndash;绑定打包操作，打包时部署image&ndash;&gt;-->
+                <!--            <id>build-image</id>-->
+                <!--            <phase>package</phase>-->
+                <!--            <goals>-->
+                <!--                <goal>build</goal>-->
+                <!--            </goals>-->
+                <!--        </execution>-->
+                <!--    </executions>-->
+                <!--    <configuration>-->
+                <!--        <imageName>${project.artifactId}:${project.version}</imageName>-->
+                <!--        <dockerHost>${docker.host}</dockerHost>-->
+                <!--        &lt;!&ndash;dockerfile &ndash;&gt;-->
+                <!--        <dockerDirectory></dockerDirectory>-->
+                <!--    </configuration>-->
+                <!--</plugin>-->
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
