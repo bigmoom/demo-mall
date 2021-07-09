@@ -28,7 +28,6 @@ import java.time.Duration;
  * @date 2021/7/8 11:30
  */
 @EnableCaching
-@Configuration
 @Slf4j
 public abstract class BaseRedisCacheConfig extends CachingConfigurerSupport {
     //配置redis连接属性
