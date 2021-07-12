@@ -42,3 +42,23 @@ spring:
 #        连接池最小空闲连接
         min-idle: 0
 
+security:
+  jwt:
+#   JWT 请求头
+    tokenHeader: Authorization
+#   秘钥
+    securityKey: mall
+#   过期时间(60*60*24*7)
+    expiration: 604800
+#   设置JWT开头
+    tokenHead: 'Bearer'
+
+  ignored:
+    urls:
+      - /admin/login
+      - /admin/register
+      - /admin/logout
+      - /swagger-ui.html
+      - /swagger/**
+
+

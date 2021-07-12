@@ -11,6 +11,8 @@
 
     <modules>
         <module>mall-mbg</module>
+        <module>mall-security</module>
+        <module>mall-common</module>
     </modules>
 
     <properties>
@@ -19,6 +21,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <mall-mbg.version>0.0.1-SNAPSHOT</mall-mbg.version>
         <mall-common.version>0.0.1-SNAPSHOT</mall-common.version>
+        <mall-security.version>0.0.1-SNAPSHOT</mall-security.version>
         <mysql-connector.version>8.0.24</mysql-connector.version>
         <mybatis.version>2.2.0</mybatis.version>
         <mybatis-generator.version>1.4.0</mybatis-generator.version>
@@ -31,10 +34,14 @@
         <redis.version>2.5.1</redis.version>
         <jedis.version>3.6.0</jedis.version>
         <spring-boot-configuration-processor.version>2.3.0.RELEASE</spring-boot-configuration-processor.version>
+        <spring-boot-starter-security.version>2.5.1</spring-boot-starter-security.version>
+        <spring-security-test.version>5.5.0</spring-security-test.version>
+        <jwt.version>0.9.1</jwt.version>
 
         <!--plugins -->
         <docker.version>1.2.2</docker.version>
         <docker.host>http://192.168.56.129:2375</docker.host>
+        <maven-plugin.version>2.5.2</maven-plugin.version>
     </properties>
 
     <parent>
@@ -55,6 +62,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
     <!--模块依赖的版本控制-->
@@ -71,6 +84,12 @@
                 <groupId>com.cwh.mall</groupId>
                 <artifactId>mall-common</artifactId>
                 <version>${mall-common.version}</version>
+            </dependency>
+            <!--mall-security模块-->
+            <dependency>
+                <groupId>com.cwh.mall</groupId>
+                <artifactId>mall-security</artifactId>
+                <version>${mall-security.version}</version>
             </dependency>
             <!--mysql数据库驱动-->
             <dependency>
@@ -145,6 +164,23 @@
                 <artifactId>spring-boot-configuration-processor</artifactId>
                 <version>${spring-boot-configuration-processor.version}</version>
             </dependency>
+            <!--springsecurity-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring-boot-starter-security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-test</artifactId>
+                <version>${spring-security-test.version}</version>
+            </dependency>
+            <!--JWT-->
+            <dependency>
+                <groupId>io.jsonwebToken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -155,6 +191,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${maven-plugin.version}</version>
                 </plugin>
 
                 <!--<plugin>-->

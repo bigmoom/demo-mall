@@ -1,6 +1,6 @@
-package com.cwh.mall.mallcommon.config;
+package com.cwh.mall.common.config;
 
-import com.cwh.mall.mallcommon.domain.properties.SwaggerProperties;
+import com.cwh.mall.common.domain.properties.SwaggerProperties;
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cwh.mall.mallmbg.mapper.OmsCompanyAddressMapper">
-  <resultMap id="BaseResultMap" type="com.cwh.mall.mallmbg.model.OmsCompanyAddress">
+<mapper namespace="com.cwh.mall.mbg.mapper.OmsCompanyAddressMapper">
+  <resultMap id="BaseResultMap" type="com.cwh.mall.mbg.model.OmsCompanyAddress">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="address_name" jdbcType="VARCHAR" property="addressName" />
     <result column="send_status" jdbcType="INTEGER" property="sendStatus" />
@@ -75,7 +75,7 @@
     id, address_name, send_status, receive_status, name, phone, province, city, region, 
     detail_address
   </sql>
-  <select id="selectByExample" parameterType="com.cwh.mall.mallmbg.model.OmsCompanyAddressExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.cwh.mall.mbg.model.OmsCompanyAddressExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -99,13 +99,13 @@
     delete from oms_company_address
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.cwh.mall.mallmbg.model.OmsCompanyAddressExample">
+  <delete id="deleteByExample" parameterType="com.cwh.mall.mbg.model.OmsCompanyAddressExample">
     delete from oms_company_address
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cwh.mall.mallmbg.model.OmsCompanyAddress">
+  <insert id="insert" parameterType="com.cwh.mall.mbg.model.OmsCompanyAddress">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -118,7 +118,7 @@
       #{city,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.cwh.mall.mallmbg.model.OmsCompanyAddress">
+  <insert id="insertSelective" parameterType="com.cwh.mall.mbg.model.OmsCompanyAddress">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -182,7 +182,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.cwh.mall.mallmbg.model.OmsCompanyAddressExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.cwh.mall.mbg.model.OmsCompanyAddressExample" resultType="java.lang.Long">
     select count(*) from oms_company_address
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -242,7 +242,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cwh.mall.mallmbg.model.OmsCompanyAddress">
+  <update id="updateByPrimaryKeySelective" parameterType="com.cwh.mall.mbg.model.OmsCompanyAddress">
     update oms_company_address
     <set>
       <if test="addressName != null">
@@ -275,7 +275,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cwh.mall.mallmbg.model.OmsCompanyAddress">
+  <update id="updateByPrimaryKey" parameterType="com.cwh.mall.mbg.model.OmsCompanyAddress">
     update oms_company_address
     set address_name = #{addressName,jdbcType=VARCHAR},
       send_status = #{sendStatus,jdbcType=INTEGER},

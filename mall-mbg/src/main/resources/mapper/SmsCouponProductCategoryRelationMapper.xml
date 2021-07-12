@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cwh.mall.mallmbg.mapper.SmsCouponProductCategoryRelationMapper">
-  <resultMap id="BaseResultMap" type="com.cwh.mall.mallmbg.model.SmsCouponProductCategoryRelation">
+<mapper namespace="com.cwh.mall.mbg.mapper.SmsCouponProductCategoryRelationMapper">
+  <resultMap id="BaseResultMap" type="com.cwh.mall.mbg.model.SmsCouponProductCategoryRelation">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="coupon_id" jdbcType="BIGINT" property="couponId" />
     <result column="product_category_id" jdbcType="BIGINT" property="productCategoryId" />
@@ -69,7 +69,7 @@
   <sql id="Base_Column_List">
     id, coupon_id, product_category_id, product_category_name, parent_category_name
   </sql>
-  <select id="selectByExample" parameterType="com.cwh.mall.mallmbg.model.SmsCouponProductCategoryRelationExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.cwh.mall.mbg.model.SmsCouponProductCategoryRelationExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -93,13 +93,13 @@
     delete from sms_coupon_product_category_relation
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.cwh.mall.mallmbg.model.SmsCouponProductCategoryRelationExample">
+  <delete id="deleteByExample" parameterType="com.cwh.mall.mbg.model.SmsCouponProductCategoryRelationExample">
     delete from sms_coupon_product_category_relation
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cwh.mall.mallmbg.model.SmsCouponProductCategoryRelation">
+  <insert id="insert" parameterType="com.cwh.mall.mbg.model.SmsCouponProductCategoryRelation">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -108,7 +108,7 @@
     values (#{couponId,jdbcType=BIGINT}, #{productCategoryId,jdbcType=BIGINT}, #{productCategoryName,jdbcType=VARCHAR}, 
       #{parentCategoryName,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cwh.mall.mallmbg.model.SmsCouponProductCategoryRelation">
+  <insert id="insertSelective" parameterType="com.cwh.mall.mbg.model.SmsCouponProductCategoryRelation">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -142,7 +142,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.cwh.mall.mallmbg.model.SmsCouponProductCategoryRelationExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.cwh.mall.mbg.model.SmsCouponProductCategoryRelationExample" resultType="java.lang.Long">
     select count(*) from sms_coupon_product_category_relation
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -182,7 +182,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cwh.mall.mallmbg.model.SmsCouponProductCategoryRelation">
+  <update id="updateByPrimaryKeySelective" parameterType="com.cwh.mall.mbg.model.SmsCouponProductCategoryRelation">
     update sms_coupon_product_category_relation
     <set>
       <if test="couponId != null">
@@ -200,7 +200,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cwh.mall.mallmbg.model.SmsCouponProductCategoryRelation">
+  <update id="updateByPrimaryKey" parameterType="com.cwh.mall.mbg.model.SmsCouponProductCategoryRelation">
     update sms_coupon_product_category_relation
     set coupon_id = #{couponId,jdbcType=BIGINT},
       product_category_id = #{productCategoryId,jdbcType=BIGINT},

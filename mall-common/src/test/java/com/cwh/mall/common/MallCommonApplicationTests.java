@@ -1,4 +1,4 @@
-package com.cwh.mall.mallcommon;
+package com.cwh.mall.common;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
