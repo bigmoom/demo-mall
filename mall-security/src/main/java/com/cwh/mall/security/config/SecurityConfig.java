@@ -1,7 +1,8 @@
 package com.cwh.mall.security.config;
 
-import com.cwh.mall.security.component.LoginFilter;
+import com.cwh.mall.security.component.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,9 +32,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //自定义UserDetailsService
     @Autowired
     private UserDetailsService userDetailsService;
+    //认证失败处理器
+    @Autowired
+    private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
     //登录认证过滤器
     @Autowired
     private LoginFilter loginFilter;
+    //权限校验失败处理器
+    @Autowired
+    private MyAccessDeniedHandler myAccessDeniedHandler;
     /**
      * 配置http请求相关策略
      * @param httpSecurity
@@ -68,8 +75,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //认证失败处理器
                 .exceptionHandling()
-                .accessDeniedHandler()
-                .authenticationEntryPoint()
+                .authenticationEntryPoint(myAuthenticationEntryPoint)
+                .accessDeniedHandler(myAccessDeniedHandler)
                 //登录认证过滤器
                 .and()
                 .addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class);
@@ -102,4 +109,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
+    @ConditionalOnBean(name = "dynamicSecurityService")
+    @Bean
+    public DynamicSecurityFilter dynamicSecurityFilter(){
+        return new DynamicSecurityFilter();
+    }
+
+    @ConditionalOnBean(name = "dynamicSecurityService")
+    @Bean
+    public DynamicAccessDecisionManager dynamicAccessDecisionManager(){
+        return new DynamicAccessDecisionManager();
+    }
+
+    @ConditionalOnBean(name = "dynamicSecurityService")
+    @Bean
+    public DynamicSecurityMetadataSource dynamicSecurityMetadataSource(){
+        return new DynamicSecurityMetadataSource();
+    }
 }

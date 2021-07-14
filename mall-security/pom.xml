@@ -27,6 +27,11 @@
             <groupId>com.cwh.mall</groupId>
             <artifactId>mall-common</artifactId>
         </dependency>
+        <!--mall-mbg-->
+        <dependency>
+            <groupId>com.cwh.mall</groupId>
+            <artifactId>mall-mbg</artifactId>
+        </dependency>
         <!--Security-->
         <dependency>
             <groupId>org.springframework.security</groupId>

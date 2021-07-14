@@ -1,6 +1,6 @@
 package com.cwh.mall.security.component;
 
-import com.cwh.mall.common.domain.param.ResultCode;
+import com.cwh.mall.common.domain.bo.ResultCode;
 import com.cwh.mall.common.domain.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -21,15 +21,17 @@ import java.io.PrintWriter;
 @Slf4j
 @Component
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    //todo: 构建统一返回视图ResultVO，实现EntryPoint
 
     @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        log.error(e.getMessage());
-        httpServletResponse.setContentType("application/json;charset=utf-8");
+    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException authException) throws IOException, ServletException {
+        log.error(authException.getMessage());
+        //CORS，解决跨域问题，
+        httpServletResponse.setHeader("Access-Control-Allow-Origin","*");
+        httpServletResponse.setContentType("application/json");
+        httpServletResponse.setCharacterEncoding("UTF-8");
         PrintWriter out = httpServletResponse.getWriter();
-
-        out.write(resultVO.toString());
+        ResultVO resultVO = new ResultVO(ResultCode.UNAUTHORIZED,authException);
+        out.println(resultVO);
         out.flush();
         out.close();
     }
