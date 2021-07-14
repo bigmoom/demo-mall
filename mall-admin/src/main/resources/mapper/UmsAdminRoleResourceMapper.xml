@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cwh.mall.dao.UmsAdminRoleResourceMapper">
+
+    <select id="getResourceList" resultType="com.cwh.mall.mbg.model.UmsResource" >
+        SELECT
+            ur.id id,
+            ur.create_time createTime,
+            ur.`name` `name`,
+            ur.url url,
+            ur.description description,
+            ur.category_id categoryId
+        FROM
+            ums_admin_role_relation uarr
+        LEFT JOIN ums_role_resource_relation urrr on uarr.role_id = urrr.role_id
+        LEFT JOIN ums_resource ur on ur.id = urrr.resource_id
+        WHERE
+            uarr.admin_id = #{adminId}
+        AND ur.id IS NOT NULL
+        GROUP BY
+            ur.id
+    </select>
+
+</mapper>

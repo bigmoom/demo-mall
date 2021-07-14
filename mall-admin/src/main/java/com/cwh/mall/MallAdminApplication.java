@@ -1,7 +1,5 @@
-package com.cwh.mall.admin;
+package com.cwh.mall;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.mybatis.spring.annotation.MapperScans;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

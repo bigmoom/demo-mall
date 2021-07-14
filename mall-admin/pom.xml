@@ -24,6 +24,10 @@
             <artifactId>mall-mbg</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.cwh.mall</groupId>
+            <artifactId>mall-security</artifactId>
+        </dependency>
     </dependencies>
 
 

@@ -1,4 +1,4 @@
-package com.cwh.mall.admin.config;
+package com.cwh.mall.config;
 
 import com.cwh.mall.common.config.BaseSwaggerConfig;
 import com.cwh.mall.common.domain.bo.SwaggerProperties;

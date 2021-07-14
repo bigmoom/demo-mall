@@ -1,4 +1,4 @@
-package com.cwh.mall.admin.config;
+package com.cwh.mall.config;
 
 import com.cwh.mall.common.config.BaseRedisCacheConfig;
 import com.cwh.mall.common.domain.bo.BaseRedisProperties;
