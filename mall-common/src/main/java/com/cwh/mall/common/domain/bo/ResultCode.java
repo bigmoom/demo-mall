@@ -1,4 +1,4 @@
-package com.cwh.mall.common.domain.param;
+package com.cwh.mall.common.domain.bo;
 
 import lombok.Getter;
 

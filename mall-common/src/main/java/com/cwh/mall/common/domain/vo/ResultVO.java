@@ -1,6 +1,6 @@
 package com.cwh.mall.common.domain.vo;
 
-import com.cwh.mall.common.domain.param.ResultCode;
+import com.cwh.mall.common.domain.bo.ResultCode;
 import lombok.Data;
 
 /**

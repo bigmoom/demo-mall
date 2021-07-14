@@ -1,6 +1,6 @@
 package com.cwh.mall.common.config;
 
-import com.cwh.mall.common.domain.properties.BaseRedisProperties;
+import com.cwh.mall.common.domain.bo.BaseRedisProperties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -47,15 +47,19 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <!-- tableName：数据库中的表名或视图名；domainObjectName：生成的实体类的类名-->
-        <!--<table tableName="" domainObjectName=""-->
+         <!--tableName：数据库中的表名或视图名；domainObjectName：生成的实体类的类名-->
+        <!--<table tableName="%"-->
         <!--       enableCountByExample="false" enableUpdateByExample="false"-->
         <!--       enableDeleteByExample="false" enableSelectByExample="false"-->
         <!--       selectByExampleQueryId="false">-->
         <!--</table>-->
 
-        <table tableName="%">
+        <table tableName="%"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+
         </table>
     </context>
 </generatorConfiguration>

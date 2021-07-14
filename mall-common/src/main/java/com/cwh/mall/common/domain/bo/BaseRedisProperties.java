@@ -1,4 +1,4 @@
-package com.cwh.mall.common.domain.properties;
+package com.cwh.mall.common.domain.bo;
 
 import lombok.Builder;
 import lombok.Data;
