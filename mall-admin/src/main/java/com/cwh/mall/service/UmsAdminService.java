@@ -1,5 +1,7 @@
 package com.cwh.mall.service;
 
+import com.cwh.mall.dto.UmsAdminLoginParam;
+import com.cwh.mall.dto.UmsAdminParam;
 import com.cwh.mall.mbg.model.UmsAdmin;
 import com.cwh.mall.mbg.model.UmsResource;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,19 +16,15 @@ import java.util.List;
  */
 public interface UmsAdminService {
 
-    /**
-     * 通过用户名获取用户
-     * @param username
-     * @return
-     */
     UmsAdmin getAdminByUsername(String username);
 
-    /**
-     * 用以实现UserDetailService
-     * @param username
-     * @return
-     */
     UserDetails loadUserByUsername(String username);
 
     List<UmsResource> getResourceList(Long adminId);
+
+    UmsAdmin register(UmsAdminParam umsAdminParam);
+
+    UmsAdmin getAdminById(Long id);
+
+    String login(UmsAdminLoginParam umsAdminLoginParam);
 }

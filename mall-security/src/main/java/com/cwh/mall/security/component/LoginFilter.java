@@ -47,6 +47,7 @@ public class LoginFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("启动登录验证");
         //获取authorization
         String authorization = request.getHeader(this.tokenHeader);
         //验证是否为null 以及token 类型
@@ -62,11 +63,13 @@ public class LoginFilter extends OncePerRequestFilter {
                 log.info("checking token success && userName:{}",userName);
                 //判断token是否过期
                 if(!jwtManager.isTokenExpired(token)){
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,userDetails.getPassword(),userDetails.getAuthorities());
+                    //密码不明文放在上下文中，所以设置为Null
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                     //设置authentication
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
         }
+        filterChain.doFilter(request,response);
     }
 }

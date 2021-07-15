@@ -29,9 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //加密
     @Autowired
     private PasswordEncoder passwordEncoder;
-    //自定义UserDetailsService
-    @Autowired
-    private UserDetailsService userDetailsService;
+
     //认证失败处理器
     @Autowired
     private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
@@ -91,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //添加自定义userDetailService和passEncoder
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder);
     }
 
     /**

@@ -31,7 +31,7 @@ public class DynamicSecurityMetadataSource implements SecurityMetadataSource {
      * @PostConstruct 优先执行,但是晚于autowired
      */
     @PostConstruct
-    public void loadDataSouce(){
+    public void loadDataSource(){
         configAttributeMap = dynamicSecurityService.loadDataSource();
     }
     /**
@@ -44,7 +44,7 @@ public class DynamicSecurityMetadataSource implements SecurityMetadataSource {
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 
         if(configAttributeMap == null){
-            loadDataSouce();
+            loadDataSource();
         }
         List<ConfigAttribute> configAttributes = new ArrayList<>();
 
@@ -77,7 +77,7 @@ public class DynamicSecurityMetadataSource implements SecurityMetadataSource {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return false;
+        return true;
     }
 
 }

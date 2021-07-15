@@ -17,7 +17,6 @@ import java.util.Objects;
  * @author cwh
  * @date 2021/7/13 14:50
  */
-@Component
 public class DynamicAccessDecisionManager implements AccessDecisionManager {
     /**
      * 通过比较authentication中用户拥有的资源与当前访问所需资源进行比较
@@ -51,11 +50,11 @@ public class DynamicAccessDecisionManager implements AccessDecisionManager {
 
     @Override
     public boolean supports(ConfigAttribute configAttribute) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return false;
+        return true;
     }
 }

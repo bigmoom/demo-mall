@@ -50,6 +50,10 @@ public class DynamicSecurityFilter extends AbstractSecurityInterceptor implement
         super.setAccessDecisionManager(accessDecisionManager);
     }
 
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
     /**
      * 核心操作
      * 调用AccessDecisionManager中的decide进行鉴权
@@ -92,6 +96,6 @@ public class DynamicSecurityFilter extends AbstractSecurityInterceptor implement
 
     @Override
     public Class<?> getSecureObjectClass() {
-        return null;
+        return FilterInvocation.class;
     }
 }

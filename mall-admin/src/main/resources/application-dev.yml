@@ -58,7 +58,19 @@ security:
       - /admin/login
       - /admin/register
       - /admin/logout
-      - /swagger-ui.html
+      - /admin/**
+      - /swagger-resources/**
+      - /**/v2/api-docs
+      - /v3/api-docs
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+      - /webjars/**
+      - /swagger-ui/*
       - /swagger/**
 
-
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+    - classpath*:mapper/*.xml
