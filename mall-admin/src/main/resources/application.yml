@@ -1,6 +1,8 @@
 spring:
   application:
-    name: mall-admin
+    name: mall-demo
   profiles:
     active: dev #默认为开发环境
-
+logging:
+  file:
+    path: D:/Logs

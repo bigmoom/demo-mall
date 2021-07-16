@@ -46,11 +46,11 @@ public class UmsAdminController {
      * @param umsAdminParam
      * @return
      */
-    @ApiOperation("用户登录")
-    @GetMapping("/login")
-    public ResultVO login(@RequestBody UmsAdminParam umsAdminParam){
-
-    }
+    //@ApiOperation("用户登录")
+    //@GetMapping("/login")
+    //public ResultVO login(@RequestBody UmsAdminParam umsAdminParam){
+    //
+    //}
 
 
 }
