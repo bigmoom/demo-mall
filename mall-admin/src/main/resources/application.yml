@@ -3,6 +3,10 @@ spring:
     name: mall-demo
   profiles:
     active: dev #默认为开发环境
+
 logging:
   file:
     path: D:/Logs
+
+logstash:
+  host: 192.168.56.130

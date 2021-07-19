@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="GROUP_BY_SEVERITY" value="true" />
+    <option name="ANALYZE_TEST_SOURCES" value="false" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90fc72dd-899b-44ec-8dd1-fc4145b33b5e" name="Default Changelist" comment="security module finished">
+    <list default="true" id="90fc72dd-899b-44ec-8dd1-fc4145b33b5e" name="Default Changelist" comment="添加日志模块配置">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/controller/UmsAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/controller/UmsAdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/resources/application-dev.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/config/BaseSwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/config/BaseSwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/config/BaseRedisCacheConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/config/BaseRedisCacheConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-common/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +56,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="3" />
+  </component>
   <component name="ProjectId" id="1usTRy8EXVV0pu5vWi7i2puGE8v" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -68,7 +78,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="jdk.selected.JAVA_MODULE" value="11" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../demo/mall-master" />
-    <property name="settings.editor.selected.configurable" value="fileTemplates" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.completion" />
   </component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
@@ -98,19 +108,6 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -206,7 +203,9 @@
       <workItem from="1626223482064" duration="12366000" />
       <workItem from="1626256921905" duration="307000" />
       <workItem from="1626310554220" duration="21613000" />
-      <workItem from="1626396940051" duration="12629000" />
+      <workItem from="1626396940051" duration="13050000" />
+      <workItem from="1626655518567" duration="8382000" />
+      <workItem from="1626675940988" duration="6487000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <created>1626257055924</created>
@@ -229,11 +228,21 @@
       <option name="project" value="LOCAL" />
       <updated>1626397831239</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="添加日志模块配置">
+      <created>1626430370177</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1626430370177</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.conf" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -250,7 +259,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="更新" />
     <MESSAGE value="security module finished" />
-    <option name="LAST_COMMIT_MESSAGE" value="security module finished" />
+    <MESSAGE value="添加日志模块配置" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加日志模块配置" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

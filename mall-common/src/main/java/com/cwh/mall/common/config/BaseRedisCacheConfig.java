@@ -26,10 +26,15 @@ import java.time.Duration;
  * @author cwh
  * @date 2021/7/8 11:30
  */
+@SuppressWarnings("ALL")
 @EnableCaching
 @Slf4j
 public abstract class BaseRedisCacheConfig extends CachingConfigurerSupport {
-    //配置redis连接属性
+    /**
+     *
+     * @return
+     */
+    @SuppressWarnings("AlibabaCommentsMustBeJavadocFormat")
     public abstract BaseRedisProperties redisProperties();
 
     /**

@@ -9,6 +9,8 @@
     <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="springBoot"/>
     <!--日志文件保存路径-->
     <springProperty scope="context" name="FILE_PATH" source="logging.file.path" defaultValue="./"/>
+    <!--logstash host-->
+    <springProperty scope="context" name="LOGSTASH_HOST" source="logstash.host" defaultValue="localhost"/>
 
     <appender name="CONSOLE_DEBUG" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -45,6 +47,32 @@
         </rollingPolicy>
     </appender>
 
+    <!--日志输出到logstash-->
+    <appender name="LOGSTASH_RECORD" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOGSTASH_HOST}:4560</destination>
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>Asia/Shanghai</timeZone>
+                </timestamp>
+                <!--自定义日志输出格式-->
+                <pattern>
+                    <pattern>
+                        {
+                        "project": "demo_mall",
+                        "level": "%level",
+                        "class": "%logger",
+                        "message": "%message"
+                        }
+                    </pattern>
+                </pattern>
+
+            </providers>
+
+        </encoder>
+
+    </appender>
+
     <!--控制框架输出日志-->
     <logger name="org.slf4j" level="INFO"/>
     <logger name="springfox" level="INFO"/>
@@ -60,6 +88,7 @@
     <logger name="com.cwh.mall.controller" level="DEBUG" additivity = "false">
         <appender-ref ref="CONSOLE_DEBUG"/>
         <appender-ref ref="FILE_INFO"/>
+        <appender-ref ref="LOGSTASH_RECORD"/>
     </logger>
 
 </configuration>

@@ -37,6 +37,7 @@
         <spring-boot-starter-security.version>2.5.1</spring-boot-starter-security.version>
         <spring-security-test.version>5.5.0</spring-security-test.version>
         <jwt.version>0.9.1</jwt.version>
+        <logstash.version>5.3</logstash.version>
 
         <!--plugins -->
         <docker.version>1.2.2</docker.version>
@@ -181,7 +182,15 @@
                 <artifactId>jjwt</artifactId>
                 <version>${jwt.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash.version}</version>
+            </dependency>
         </dependencies>
+
+
     </dependencyManagement>
 
     <build>
