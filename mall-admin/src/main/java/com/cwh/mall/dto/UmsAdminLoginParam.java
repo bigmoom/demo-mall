@@ -1,5 +1,6 @@
 package com.cwh.mall.dto;
 
+import com.cwh.mall.common.validation.annotation.PasswordValidator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class UmsAdminLoginParam {
     @ApiModelProperty(value = "用户名",required = true)
     private String username;
 
-    @NotEmpty
+    @PasswordValidator
     @ApiModelProperty(value = "密码",required = true)
     private String password;
 }

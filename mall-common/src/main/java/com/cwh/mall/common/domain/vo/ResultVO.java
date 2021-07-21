@@ -14,7 +14,7 @@ public class ResultVO<T> {
     /**
      * 状态码
      */
-    private long code;
+    private Long code;
     /**
      * 响应信息，说明响应情况
      */
@@ -30,8 +30,12 @@ public class ResultVO<T> {
     }
 
     public ResultVO(ResultCode resultCode, T data){
-        this.code = resultCode.getCode();
-        this.message = resultCode.getMessage();
+        this(resultCode.getCode(),resultCode.getMessage(),data);
+    }
+
+    public ResultVO(Long resultCode, String message, T data){
+        this.code = resultCode;
+        this.message = message;
         this.data = data;
     }
 

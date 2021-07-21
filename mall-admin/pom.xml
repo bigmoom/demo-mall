@@ -19,16 +19,26 @@
         <java.version>11</java.version>
     </properties>
     <dependencies>
+        <!--mbg模块-->
         <dependency>
             <groupId>com.cwh.mall</groupId>
             <artifactId>mall-mbg</artifactId>
         </dependency>
-
+        <!--security模块-->
         <dependency>
             <groupId>com.cwh.mall</groupId>
             <artifactId>mall-security</artifactId>
         </dependency>
-
+        <!--热部署-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <!--fastjson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
     </dependencies>
 
 

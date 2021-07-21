@@ -21,7 +21,7 @@ public enum ResultCode {
     /**
      * 响应码
      */
-    private int code;
+    private long code;
     /**
      * 响应消息
      */
@@ -32,7 +32,7 @@ public enum ResultCode {
      * @param code
      * @param message
      */
-    ResultCode(int code, String message) {
+    ResultCode(long code, String message) {
         this.code = code;
         this.message = message;
     }

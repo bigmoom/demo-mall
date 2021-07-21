@@ -1,18 +1,27 @@
 package com.cwh.mall.service.impl;
 
 import com.cwh.mall.bo.UserDetail;
+import com.cwh.mall.common.config.BaseKeyGenerator;
+import com.cwh.mall.common.util.RequestUtil;
+import com.cwh.mall.config.UmsAdminNameKeyGenerator;
 import com.cwh.mall.dao.UmsAdminRoleResourceMapper;
 import com.cwh.mall.dto.UmsAdminLoginParam;
 import com.cwh.mall.dto.UmsAdminParam;
+import com.cwh.mall.mbg.mapper.UmsAdminLoginLogMapper;
+import com.cwh.mall.mbg.model.UmsAdminLoginLog;
 import com.cwh.mall.mbg.model.UmsResource;
 import com.cwh.mall.security.component.JWTManager;
 import com.cwh.mall.service.UmsAdminService;
 import com.cwh.mall.mbg.mapper.UmsAdminMapper;
 import com.cwh.mall.mbg.model.UmsAdmin;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +33,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -48,13 +60,20 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private UmsAdminNameKeyGenerator umsAdminNameKeyGenerator;
+
+    @Autowired
     private JWTManager jwtManager;
+
+    @Autowired
+    private UmsAdminLoginLogMapper umsAdminLoginLogMapper;
     /**
      * 通过用户名获取用户
      * @param username
      * @return
      */
     @Override
+    @Cacheable(cacheNames = "umsAdmin" ,keyGenerator = "umsAdminNameKeyGenerator")
     public UmsAdmin getAdminByUsername(String username) {
         UmsAdmin umsAdmin = umsAdminMapper.selectByUsername(username);
         if(umsAdmin == null){
@@ -68,6 +87,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      * @param username
      * @return
      */
+    @Cacheable(cacheNames = "userDetail" ,keyGenerator = "umsAdminNameKeyGenerator")
     @Override
     public UserDetails loadUserByUsername(String username) {
         //获取用户
@@ -88,7 +108,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      * @param adminId
      * @return
      */
-    @Cacheable(cacheNames = "resourceList", key = "#adminId")
+    @Cacheable(cacheNames = "resourceList", key = "#p0")
     @Override
     public List<UmsResource> getResourceList(Long adminId) {
 
@@ -104,6 +124,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      * @return
      */
     @Override
+    @CachePut(cacheNames = "umsAdmin", key = "#p0.username")
     public UmsAdmin register(UmsAdminParam umsAdminParam) {
         UmsAdmin umsAdmin = new UmsAdmin();
         BeanUtils.copyProperties(umsAdminParam,umsAdmin);
@@ -119,6 +140,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
+    @Cacheable(cacheNames = "umsAdmin", key = "#p0")
     public UmsAdmin getAdminById(Long id) {
         return umsAdminMapper.selectByPrimaryKey(id);
     }
@@ -147,7 +169,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
             token = jwtManager.generateToken(username);
 
             //添加登录记录
-
+            insertLoginRecord(username);
         }catch (AuthenticationException e){
             log.error("登录异常：{}",e.getMessage());
         }
@@ -155,4 +177,63 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         return token;
 
     }
+
+    /**
+     * 添加用户的登录记录
+     * （adminID,createTime,ip,address,agent）
+     * @param username
+     */
+    private void insertLoginRecord(String username){
+        //获取用户信息
+        UmsAdmin umsAdmin = getAdminByUsername(username);
+        //设置登录信息
+        UmsAdminLoginLog umsAdminLoginLog = new UmsAdminLoginLog();
+        umsAdminLoginLog.setAdminId(umsAdmin.getId());
+        umsAdminLoginLog.setCreateTime(new Date());
+        //通过RequestUtil获取ip
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        umsAdminLoginLog.setIp(RequestUtil.getRequestIp(request));
+        //获取用户登录agent
+        umsAdminLoginLog.setUserAgent(request.getHeader("User-Agent"));
+
+        umsAdminLoginLogMapper.insert(umsAdminLoginLog);
+
+    }
+
+    /**
+     * 更新用户数据
+     * @param umsAdmin
+     * @return 返回是否成功
+     */
+    @Override
+    @Caching (
+        put = {
+            @CachePut(cacheNames = "umsAdmin", key = "#p0.username"),
+            @CachePut(cacheNames = "umsAdmin", key = "#p0.id")
+        }
+    )
+    public Boolean updateUmsAdmin(UmsAdmin umsAdmin) {
+        //id错误，找不到该用户信息
+        if(umsAdminMapper.selectByPrimaryKey(umsAdmin.getId())==null){
+            throw new UsernameNotFoundException("找不到该用户");
+        }else {
+            String encodePassword = passwordEncoder.encode(umsAdmin.getPassword());
+            umsAdmin.setPassword(encodePassword);
+            return umsAdminMapper.updateByPrimaryKey(umsAdmin)>0;
+        }
+    }
+
+    /**
+     * 根据用户id删除用户
+     * @param id
+     * @return
+     */
+    @Override
+    @CacheEvict(cacheNames = "umsAdmin", key = "#p0")
+    public Boolean deleteUmsAdmin(Long id) {
+        return umsAdminMapper.deleteByPrimaryKey(id)>0;
+    }
+
+
 }

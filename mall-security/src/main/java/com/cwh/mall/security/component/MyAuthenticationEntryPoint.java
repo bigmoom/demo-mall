@@ -30,7 +30,7 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         httpServletResponse.setContentType("application/json");
         httpServletResponse.setCharacterEncoding("UTF-8");
         PrintWriter out = httpServletResponse.getWriter();
-        ResultVO resultVO = new ResultVO(ResultCode.UNAUTHORIZED,authException);
+        ResultVO resultVO = new ResultVO(ResultCode.UNAUTHORIZED,authException.getMessage());
         out.println(resultVO);
         out.flush();
         out.close();

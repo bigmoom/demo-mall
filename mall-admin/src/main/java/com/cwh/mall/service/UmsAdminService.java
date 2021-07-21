@@ -27,4 +27,8 @@ public interface UmsAdminService {
     UmsAdmin getAdminById(Long id);
 
     String login(UmsAdminLoginParam umsAdminLoginParam);
+
+    Boolean updateUmsAdmin(UmsAdmin umsAdmin);
+
+    Boolean deleteUmsAdmin(Long id);
 }

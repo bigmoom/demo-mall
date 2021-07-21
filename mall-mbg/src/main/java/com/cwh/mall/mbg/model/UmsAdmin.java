@@ -1,20 +1,30 @@
 package com.cwh.mall.mbg.model;
 
+import com.cwh.mall.common.validation.annotation.PasswordValidator;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class UmsAdmin implements Serializable {
     private Long id;
 
+    @NotBlank
     private String username;
 
+    @NotBlank
+    @PasswordValidator
     private String password;
 
     @ApiModelProperty(value = "头像")
     private String icon;
 
     @ApiModelProperty(value = "邮箱")
+    @Email
     private String email;
 
     @ApiModelProperty(value = "昵称")

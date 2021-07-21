@@ -38,6 +38,8 @@
         <spring-security-test.version>5.5.0</spring-security-test.version>
         <jwt.version>0.9.1</jwt.version>
         <logstash.version>5.3</logstash.version>
+        <devtools.version>2.5.2</devtools.version>
+        <fastjson.version>1.2.76</fastjson.version>
 
         <!--plugins -->
         <docker.version>1.2.2</docker.version>
@@ -182,12 +184,25 @@
                 <artifactId>jjwt</artifactId>
                 <version>${jwt.version}</version>
             </dependency>
-
+            <!--logstash-->
             <dependency>
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>${logstash.version}</version>
             </dependency>
+            <!--热部署-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <version>${devtools.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
         </dependencies>
 
 

@@ -57,12 +57,12 @@
                 </timestamp>
                 <!--自定义日志输出格式-->
                 <pattern>
-                    <pattern>
-                        {
+                    <pattern>{
                         "project": "demo_mall",
                         "level": "%level",
                         "class": "%logger",
                         "message": "%message"
+
                         }
                     </pattern>
                 </pattern>

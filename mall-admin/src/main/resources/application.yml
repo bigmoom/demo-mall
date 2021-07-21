@@ -4,9 +4,19 @@ spring:
   profiles:
     active: dev #默认为开发环境
 
+  devtools:
+    restart:
+      enabled: true
+
+  cache:
+    type: redis
+
 logging:
   file:
     path: D:/Logs
 
 logstash:
-  host: 192.168.56.130
+  host: 192.168.56.131
+
+server:
+  port: 8090
