@@ -3,6 +3,7 @@ package com.cwh.mall.config;
 import com.cwh.mall.common.config.BaseKeyGenerator;
 import com.cwh.mall.dto.UmsAdminParam;
 import com.cwh.mall.mbg.model.UmsAdmin;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -12,12 +13,12 @@ import java.util.stream.Collectors;
 
 /**
  * @author cwh
- * @date 2021/7/21 18:01
+ * @date 2021/7/22 9:10
  */
 @Component
-public class UmsAdminNameKeyGenerator extends BaseKeyGenerator {
+public class UmsAdminIdKeyGenerator extends BaseKeyGenerator {
 
-    private static final String PREFIX = "USERNAME";
+    private static final String PREFIX = "ID";
     private static final CharSequence SEPERATOR = ":";
 
     @Override
@@ -27,8 +28,6 @@ public class UmsAdminNameKeyGenerator extends BaseKeyGenerator {
         stringJoiner.add(target.getClass().getSimpleName());
         //添加前缀
         stringJoiner.add(PREFIX);
-        ////添加方法名
-        //stringJoiner.add(method.getName());
         //添加参数名
         //Arrays.stream(objects).map(o -> stringJoiner.add(o.toString())).collect(Collectors.toList());
 
@@ -42,14 +41,10 @@ public class UmsAdminNameKeyGenerator extends BaseKeyGenerator {
 
     private StringJoiner connectKey(StringJoiner stringJoiner,Object object){
         if(object instanceof UmsAdmin){
-            stringJoiner.add(((UmsAdmin) object).getUsername());
-        }else if(object instanceof UmsAdminParam){
-            stringJoiner.add(((UmsAdminParam) object).getUsername());
+            stringJoiner.add(((UmsAdmin) object).getId().toString());
         }else {
             stringJoiner.add(object.toString());
         }
         return stringJoiner;
     }
-
-
 }

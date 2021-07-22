@@ -3,17 +3,20 @@ package com.cwh.mall.service.impl;
 import com.cwh.mall.bo.UserDetail;
 import com.cwh.mall.common.config.BaseKeyGenerator;
 import com.cwh.mall.common.util.RequestUtil;
+import com.cwh.mall.config.UmsAdminIdKeyGenerator;
 import com.cwh.mall.config.UmsAdminNameKeyGenerator;
 import com.cwh.mall.dao.UmsAdminRoleResourceMapper;
 import com.cwh.mall.dto.UmsAdminLoginParam;
 import com.cwh.mall.dto.UmsAdminParam;
 import com.cwh.mall.mbg.mapper.UmsAdminLoginLogMapper;
 import com.cwh.mall.mbg.model.UmsAdminLoginLog;
+import com.cwh.mall.mbg.model.UmsMenu;
 import com.cwh.mall.mbg.model.UmsResource;
 import com.cwh.mall.security.component.JWTManager;
 import com.cwh.mall.service.UmsAdminService;
 import com.cwh.mall.mbg.mapper.UmsAdminMapper;
 import com.cwh.mall.mbg.model.UmsAdmin;
+import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -63,10 +66,20 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     private UmsAdminNameKeyGenerator umsAdminNameKeyGenerator;
 
     @Autowired
+    private UmsAdminIdKeyGenerator umsAdminIdKeyGenerator;
+
+    @Autowired
     private JWTManager jwtManager;
 
     @Autowired
     private UmsAdminLoginLogMapper umsAdminLoginLogMapper;
+
+    /**
+     *自调用以避免方法内调用缓存不生效
+     */
+    @Autowired
+    private UmsAdminServiceImpl umsAdminService;
+
     /**
      * 通过用户名获取用户
      * @param username
@@ -87,13 +100,13 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      * @param username
      * @return
      */
-    @Cacheable(cacheNames = "userDetail" ,keyGenerator = "umsAdminNameKeyGenerator")
+    //@Cacheable(cacheNames = "userDetail" ,keyGenerator = "umsAdminNameKeyGenerator")
     @Override
     public UserDetails loadUserByUsername(String username) {
         //获取用户
-        UmsAdmin umsAdmin = this.getAdminByUsername(username);
+        UmsAdmin umsAdmin = umsAdminService.getAdminByUsername(username);
         //获取用户所拥有的权限
-        Set<SimpleGrantedAuthority> authorities = getResourceList(umsAdmin.getId()).stream()
+        Set<SimpleGrantedAuthority> authorities = umsAdminService.getResourceList(umsAdmin.getId()).stream()
                 .map(role -> new SimpleGrantedAuthority(role.getId()+":"+role.getName()))
                 .collect(Collectors.toSet());
 
@@ -108,7 +121,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      * @param adminId
      * @return
      */
-    @Cacheable(cacheNames = "resourceList", key = "#p0")
+    @Cacheable(cacheNames = "resourceList", keyGenerator = "umsAdminIdKeyGenerator")
     @Override
     public List<UmsResource> getResourceList(Long adminId) {
 
@@ -124,7 +137,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      * @return
      */
     @Override
-    @CachePut(cacheNames = "umsAdmin", key = "#p0.username")
+    @CachePut(cacheNames = "umsAdmin", keyGenerator = "umsAdminNameKeyGenerator")
     public UmsAdmin register(UmsAdminParam umsAdminParam) {
         UmsAdmin umsAdmin = new UmsAdmin();
         BeanUtils.copyProperties(umsAdminParam,umsAdmin);
@@ -134,15 +147,22 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         String encodePassword = passwordEncoder.encode(umsAdmin.getPassword());
         umsAdmin.setPassword(encodePassword);
         umsAdminMapper.insert(umsAdmin);
+        log.info("注册活动：用户-{}  时间-{}",umsAdmin.getUsername(),umsAdmin.getCreateTime());
         return umsAdmin;
 
 
     }
 
     @Override
-    @Cacheable(cacheNames = "umsAdmin", key = "#p0")
+    @Cacheable(cacheNames = "umsAdmin", keyGenerator = "umsAdminIdKeyGenerator")
     public UmsAdmin getAdminById(Long id) {
-        return umsAdminMapper.selectByPrimaryKey(id);
+
+        UmsAdmin umsAdmin = umsAdminMapper.selectByPrimaryKey(id);
+        if(umsAdmin == null){
+            throw new UsernameNotFoundException("未找到该用户");
+        }else {
+            return umsAdmin;
+        }
     }
 
     @Override
@@ -196,8 +216,11 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         umsAdminLoginLog.setIp(RequestUtil.getRequestIp(request));
         //获取用户登录agent
         umsAdminLoginLog.setUserAgent(request.getHeader("User-Agent"));
-
         umsAdminLoginLogMapper.insert(umsAdminLoginLog);
+        //更新umsAdmin表中登录时间
+        umsAdminMapper.updateLoginTime(umsAdmin.getId(),umsAdminLoginLog.getCreateTime());
+
+        log.info("登录活动：用户-{}  时间-{}",umsAdmin.getUsername(),umsAdminLoginLog.getCreateTime());
 
     }
 
@@ -209,31 +232,67 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     @Override
     @Caching (
         put = {
-            @CachePut(cacheNames = "umsAdmin", key = "#p0.username"),
-            @CachePut(cacheNames = "umsAdmin", key = "#p0.id")
+            @CachePut(cacheNames = "umsAdmin", keyGenerator = "umsAdminNameKeyGenerator"),
+            @CachePut(cacheNames = "umsAdmin", keyGenerator = "umsAdminIdKeyGenerator")
         }
     )
-    public Boolean updateUmsAdmin(UmsAdmin umsAdmin) {
+    public UmsAdmin updateUmsAdmin(UmsAdmin umsAdmin) {
         //id错误，找不到该用户信息
         if(umsAdminMapper.selectByPrimaryKey(umsAdmin.getId())==null){
             throw new UsernameNotFoundException("找不到该用户");
         }else {
             String encodePassword = passwordEncoder.encode(umsAdmin.getPassword());
             umsAdmin.setPassword(encodePassword);
-            return umsAdminMapper.updateByPrimaryKey(umsAdmin)>0;
+            //更新成功
+            if(umsAdminMapper.updateByPrimaryKey(umsAdmin)>0){
+                return umsAdmin;
+            }else {
+                return null;
+            }
         }
+
     }
 
     /**
      * 根据用户id删除用户
+     * @param umsAdmin
+     * @return
+     */
+    @Override
+    @Caching(
+            evict = {
+                    @CacheEvict(cacheNames = "umsAdmin", keyGenerator = "umsAdminNameKeyGenerator"),
+                    @CacheEvict(cacheNames = "umsAdmin", keyGenerator = "umsAdminIdKeyGenerator")
+            }
+    )
+    public Boolean deleteUmsAdmin(UmsAdmin umsAdmin) {
+
+        return umsAdminMapper.deleteByPrimaryKey(umsAdmin.getId())>0;
+
+    }
+
+    /**
+     * 获取用户可操作性菜单列表
      * @param id
      * @return
      */
     @Override
-    @CacheEvict(cacheNames = "umsAdmin", key = "#p0")
-    public Boolean deleteUmsAdmin(Long id) {
-        return umsAdminMapper.deleteByPrimaryKey(id)>0;
+    public List<UmsMenu> getUmsAdminMenu(Long id){
+        List<UmsMenu> umsMenuList = umsAdminMapper.getUmsAdminMenu(id);
+        return umsMenuList;
     }
 
-
+    /**
+     * 通过字段查询姓名或者用户名类似的用户
+     * 分页表示
+     * @param keyword 字段
+     * @param pageNum 页码
+     * @param pageSize 每页大小
+     * @return 返回页列表对象
+     */
+    @Override
+    public List<UmsAdmin> getUmsAdminByNameLike(String keyword,Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        return umsAdminMapper.selectByLikeName(keyword);
+    }
 }

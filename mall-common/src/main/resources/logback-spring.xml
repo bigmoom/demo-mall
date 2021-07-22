@@ -60,9 +60,12 @@
                     <pattern>{
                         "project": "demo_mall",
                         "level": "%level",
+                        "service": "${APP_NAME:-}",
+                        "pid": "${PID:-}",
+                        "thread": "%thread",
                         "class": "%logger",
-                        "message": "%message"
-
+                        "message": "%message",
+                        "stack_trace": "%exception{20}"
                         }
                     </pattern>
                 </pattern>
@@ -83,12 +86,21 @@
 
     <root level="DEBUG">
         <appender-ref ref="CONSOLE_DEBUG"/>
+
+
     </root>
 
     <logger name="com.cwh.mall.controller" level="DEBUG" additivity = "false">
         <appender-ref ref="CONSOLE_DEBUG"/>
         <appender-ref ref="FILE_INFO"/>
         <appender-ref ref="LOGSTASH_RECORD"/>
+    </logger>
+
+    <logger name="com.cwh.mall.service" level="DEBUG" additivity ="false">
+        <appender-ref ref="LOGSTASH_RECORD"/>
+        <appender-ref ref="FILE_INFO"/>
+
+
     </logger>
 
 </configuration>

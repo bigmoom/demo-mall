@@ -58,7 +58,6 @@ security:
       - /admin/login
       - /admin/register
       - /admin/logout
-      - /admin/**
       - /swagger-resources/**
       - /**/v2/api-docs
       - /v3/api-docs
@@ -74,3 +73,5 @@ mybatis:
   mapper-locations:
     - classpath:mapper/*.xml
     - classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

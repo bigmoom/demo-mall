@@ -22,6 +22,7 @@ public class UserDetail extends User {
 
     private UmsAdmin umsAdmin;
 
+
     public UserDetail(UmsAdmin umsAdmin, Collection<? extends GrantedAuthority> authorities) {
         super(umsAdmin.getUsername(), umsAdmin.getPassword(), authorities);
         this.umsAdmin = umsAdmin;

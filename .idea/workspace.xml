@@ -8,25 +8,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90fc72dd-899b-44ec-8dd1-fc4145b33b5e" name="Default Changelist" comment="添加ELK模块">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+    <list default="true" id="90fc72dd-899b-44ec-8dd1-fc4145b33b5e" name="Default Changelist" comment="增加校验器和缓存keyGenerator修改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/bo/UserDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/bo/UserDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/config/UmsAdminNameKeyGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/config/UmsAdminNameKeyGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/controller/UmsAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/controller/UmsAdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/dto/UmsAdminLoginParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/dto/UmsAdminLoginParam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/dto/UmsAdminParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/dto/UmsAdminParam.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/UmsAdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/UmsAdminService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/impl/UmsAdminServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/impl/UmsAdminServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/resources/application-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/resources/dao/UmsAdminRoleResourceMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/resources/mapper/UmsAdminRoleResourceMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/config/BaseRedisCacheConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/config/BaseRedisCacheConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/domain/bo/ResultCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/domain/bo/ResultCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/domain/vo/ResultVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/domain/vo/ResultVO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-common/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/resources/logback-spring.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-mbg/src/main/java/com/cwh/mall/mbg/model/UmsAdmin.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-mbg/src/main/java/com/cwh/mall/mbg/model/UmsAdmin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-security/src/main/java/com/cwh/mall/security/component/MyAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-security/src/main/java/com/cwh/mall/security/component/MyAuthenticationEntryPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-mbg/src/main/java/com/cwh/mall/mbg/mapper/UmsAdminMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-mbg/src/main/java/com/cwh/mall/mbg/mapper/UmsAdminMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-mbg/src/main/resources/mapper/UmsAdminMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-mbg/src/main/resources/mapper/UmsAdminMapper.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +91,9 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="jdk.selected.JAVA_MODULE" value="11" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../demo/mall-master" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="project.propCompiler" />
   </component>
   <component name="ReactorSettings">
@@ -138,13 +135,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -285,7 +284,8 @@
       <workItem from="1626763737408" duration="9773000" />
       <workItem from="1626829093603" duration="5257000" />
       <workItem from="1626837332601" duration="13037000" />
-      <workItem from="1626859778556" duration="3513000" />
+      <workItem from="1626859778556" duration="3590000" />
+      <workItem from="1626915113702" duration="26977000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <created>1626257055924</created>
@@ -322,7 +322,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626689006176</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="增加校验器和缓存keyGenerator修改">
+      <created>1626863363610</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1626863363610</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -348,7 +355,15 @@
     <MESSAGE value="security module finished" />
     <MESSAGE value="添加日志模块配置" />
     <MESSAGE value="添加ELK模块" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加ELK模块" />
+    <MESSAGE value="增加校验器和缓存keyGenerator修改" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加校验器和缓存keyGenerator修改" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.util.concurrent.ConcurrentHashMap$Node" memberName="next" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

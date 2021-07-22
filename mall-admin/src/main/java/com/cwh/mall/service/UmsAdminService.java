@@ -3,6 +3,7 @@ package com.cwh.mall.service;
 import com.cwh.mall.dto.UmsAdminLoginParam;
 import com.cwh.mall.dto.UmsAdminParam;
 import com.cwh.mall.mbg.model.UmsAdmin;
+import com.cwh.mall.mbg.model.UmsMenu;
 import com.cwh.mall.mbg.model.UmsResource;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,7 +29,11 @@ public interface UmsAdminService {
 
     String login(UmsAdminLoginParam umsAdminLoginParam);
 
-    Boolean updateUmsAdmin(UmsAdmin umsAdmin);
+    UmsAdmin updateUmsAdmin(UmsAdmin umsAdmin);
 
-    Boolean deleteUmsAdmin(Long id);
+    Boolean deleteUmsAdmin(UmsAdmin umsAdmin);
+
+    List<UmsMenu> getUmsAdminMenu(Long id);
+
+    List<UmsAdmin> getUmsAdminByNameLike(String name, Integer pageNum, Integer pageSize);
 }

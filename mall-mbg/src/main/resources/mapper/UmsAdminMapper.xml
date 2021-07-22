@@ -26,7 +26,27 @@
       select * from ums_admin
         where username=#{name}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+
+  <!--获取用户可操作性的菜单列表-->
+  <select id="getUmsAdminMenu" resultType="com.cwh.mall.mbg.model.UmsMenu">
+    select um.id, um.parent_id, um.create_time, um.title, um.level, um.sort, um.name, um.icon, um.hidden
+    from ums_admin ua
+    left join ums_admin_role_relation uarr on ua.id = uarr.admin_id
+    left join ums_role_menu_relation urmr on uarr.role_id = urmr.role_id
+    left join ums_menu um on urmr.menu_id = um.id
+    where ua.id = #{id}
+  </select>
+
+  <!--搜索姓名或者用户名与参数类似的用户-->
+  <select id="selectByLikeName" resultType="com.cwh.mall.mbg.model.UmsAdmin">
+    SELECT
+    <include refid="Base_Column_List" />
+    from ums_admin
+    where username in
+    (SELECT username from ums_admin where username like '%#{username}%')
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from ums_admin
     where id = #{id,jdbcType=BIGINT}
   </delete>
@@ -153,4 +173,9 @@
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+    <update id="updateLoginTime" >
+        update ums_admin
+        set login_time = #{loginTime}
+        where id = #{id}
+    </update>
 </mapper>
