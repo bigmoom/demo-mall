@@ -24,7 +24,10 @@ public class JWTManager {
     private Long expiration;
     @Value("${security.jwt.tokenHead}")
     private String tokenHead;
-
+    @Value("${security.jwt.refreshSecurityKey}")
+    private String refreshSecurityKey;
+    @Value("${security.jwt.refreshTokenExpiration}")
+    private Long refreshTokenExpiration;
     /**
      * 根据用户名和签发时间等信息生成token
      * @param name
@@ -42,6 +45,26 @@ public class JWTManager {
                 .setExpiration(expireDate)
                 //设置加密算法和秘钥
                 .signWith(SignatureAlgorithm.HS512, securityKey)
+                .compact();
+    }
+
+    /**
+     * 生成refreshToken
+     * @param name
+     * @return
+     */
+    public String generateRefreshToken(String name){
+        //设置过期时间
+        Date expireDate = new Date(System.currentTimeMillis()+refreshTokenExpiration*1000);
+        return Jwts.builder()
+                //设置 sub: 用户名
+                .setSubject(name)
+                //设置签发时间 iat: new Date()
+                .setIssuedAt(new Date())
+                //设置过期时间 exp: expireDate
+                .setExpiration(expireDate)
+                //设置加密算法和秘钥
+                .signWith(SignatureAlgorithm.HS512, refreshSecurityKey)
                 .compact();
     }
 
@@ -72,6 +95,30 @@ public class JWTManager {
     }
 
     /**
+     * 解析refreshToken
+     * @param token
+     * @return 返回token的载体对象
+     */
+    public Claims parseRefreshToken(String token){
+        //空字符返回null
+        if(token.isEmpty()){
+            return null;
+        }
+        //非空则进行解析
+        Claims claims = null;
+        try{
+            claims = Jwts.parser()
+                    //设置秘钥
+                    .setSigningKey(refreshSecurityKey)
+                    .parseClaimsJws(token)
+                    .getBody();
+        }catch (JwtException e){
+            log.info("JWT格式解析失败：{}",token);
+        }
+        return claims;
+    }
+
+    /**
      * 验证token是否过期
      * @param token
      * @return
@@ -80,4 +127,7 @@ public class JWTManager {
         Date expireDate = this.parse(token).getExpiration();
         return expireDate.before(new Date());
     }
+
+
+
 }

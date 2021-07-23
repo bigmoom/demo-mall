@@ -42,8 +42,8 @@
     SELECT
     <include refid="Base_Column_List" />
     from ums_admin
-    where username in
-    (SELECT username from ums_admin where username like '%#{username}%')
+    where username like #{keyword}
+    or nick_name like #{keyword}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

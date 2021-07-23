@@ -2,12 +2,14 @@ package com.cwh.mall.common.exception;
 
 import com.cwh.mall.common.domain.bo.ResultCode;
 import com.cwh.mall.common.domain.vo.ResultVO;
+import io.lettuce.core.RedisConnectionException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 /**
  * 统一异常处理
@@ -37,4 +39,19 @@ public class GlobalExceptionHandler {
 
         return new ResultVO(ResultCode.VALIDATE_FAILED,message);
     }
+
+
+    @ResponseBody
+    @ExceptionHandler(value = RedisConnectionException.class)
+    public ResultVO handleRedisConnectException(RedisConnectionException redisConnectionException){
+        return new ResultVO(ResultCode.FAILED, "redis连接失败");
+    }
+
+
+    @ResponseBody
+    @ExceptionHandler(value = JedisConnectionException.class)
+    public ResultVO handleJedisConnectException(JedisConnectionException jedisConnectionException){
+        return new ResultVO(ResultCode.FAILED, "redis连接失败");
+    }
+
 }

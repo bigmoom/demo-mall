@@ -36,4 +36,8 @@ public interface UmsAdminService {
     List<UmsMenu> getUmsAdminMenu(Long id);
 
     List<UmsAdmin> getUmsAdminByNameLike(String name, Integer pageNum, Integer pageSize);
+
+    void insertTokenToRedis(String key,String tokenHead, String token);
+
+    void logout(String username);
 }

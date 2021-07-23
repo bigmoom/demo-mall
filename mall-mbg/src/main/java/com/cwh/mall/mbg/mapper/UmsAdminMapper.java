@@ -26,5 +26,5 @@ public interface UmsAdminMapper {
 
     List<UmsMenu> getUmsAdminMenu(Long id);
 
-    List<UmsAdmin> selectByLikeName(String name);
+    List<UmsAdmin> selectByLikeName(String keyword);
 }

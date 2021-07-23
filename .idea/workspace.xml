@@ -8,19 +8,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90fc72dd-899b-44ec-8dd1-fc4145b33b5e" name="Default Changelist" comment="增加校验器和缓存keyGenerator修改">
+    <list default="true" id="90fc72dd-899b-44ec-8dd1-fc4145b33b5e" name="Default Changelist" comment="继续完成UmsAdmin模块接口">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/bo/UserDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/bo/UserDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/config/UmsAdminNameKeyGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/config/UmsAdminNameKeyGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/controller/UmsAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/controller/UmsAdminController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/UmsAdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/UmsAdminService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/impl/UmsAdminServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/impl/UmsAdminServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/resources/application-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/domain/vo/ResultVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/domain/vo/ResultVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-common/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/config/BaseRedisCacheConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/config/BaseRedisCacheConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/exception/GlobalExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-mbg/src/main/java/com/cwh/mall/mbg/mapper/UmsAdminMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-mbg/src/main/java/com/cwh/mall/mbg/mapper/UmsAdminMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-mbg/src/main/resources/mapper/UmsAdminMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-mbg/src/main/resources/mapper/UmsAdminMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-security/src/main/java/com/cwh/mall/security/component/JWTManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-security/src/main/java/com/cwh/mall/security/component/JWTManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-security/src/main/java/com/cwh/mall/security/component/LoginFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-security/src/main/java/com/cwh/mall/security/component/LoginFilter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,15 +134,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -221,8 +218,6 @@
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.cwh.mall.MallAdminApplication" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SHORTEN_COMMAND_LINE" value="NONE" />
-      <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -285,7 +280,9 @@
       <workItem from="1626829093603" duration="5257000" />
       <workItem from="1626837332601" duration="13037000" />
       <workItem from="1626859778556" duration="3590000" />
-      <workItem from="1626915113702" duration="26977000" />
+      <workItem from="1626915113702" duration="35636000" />
+      <workItem from="1627011556187" duration="3443000" />
+      <workItem from="1627019846251" duration="12265000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <created>1626257055924</created>
@@ -329,7 +326,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626863363610</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="继续完成UmsAdmin模块接口">
+      <created>1626949332568</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1626949332568</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -356,7 +360,8 @@
     <MESSAGE value="添加日志模块配置" />
     <MESSAGE value="添加ELK模块" />
     <MESSAGE value="增加校验器和缓存keyGenerator修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加校验器和缓存keyGenerator修改" />
+    <MESSAGE value="继续完成UmsAdmin模块接口" />
+    <option name="LAST_COMMIT_MESSAGE" value="继续完成UmsAdmin模块接口" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

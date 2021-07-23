@@ -48,16 +48,22 @@ security:
     tokenHeader: Authorization
 #   秘钥
     securityKey: mall
-#   过期时间(60*60*24*7)
-    expiration: 604800
+#   过期时间(60*60*1)
+    expiration: 3600
 #   设置JWT开头
     tokenHead: 'Bearer'
-
+#   用于生成refreshtoken的秘钥
+    refreshSecurityKey: cwh
+#   refreshToken过期时间(60*60*24*7)
+    refreshTokenExpiration: 604800
+#   refreshToken延长过期时间
+    extendTime:
   ignored:
     urls:
       - /admin/login
       - /admin/register
-      - /admin/logout
+#      - /admin/logout
+#      - /admin/**
       - /swagger-resources/**
       - /**/v2/api-docs
       - /v3/api-docs

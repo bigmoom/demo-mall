@@ -9,6 +9,7 @@ import com.cwh.mall.mbg.model.UmsAdmin;
 import com.cwh.mall.mbg.model.UmsMenu;
 import com.cwh.mall.mbg.model.UmsResource;
 import com.cwh.mall.service.UmsAdminService;
+import io.lettuce.core.RedisConnectionException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.awt.*;
@@ -90,9 +92,23 @@ public class UmsAdminController {
         Map<String,String> tokenMap = new HashMap<>();
         tokenMap.put("token",token);
         tokenMap.put("tokenHead",tokenHead);
+
         return new ResultVO<>(tokenMap);
     }
 
+    @ApiOperation(value = "登出操作", notes = "设置redis中token值为空字符串,实现jwt失效")
+    @PostMapping("/logout")
+    public ResultVO logout(Principal principal){
+
+        if(principal == null){
+            throw new DisabledException("未登录状态");
+        }
+        //获取当前登录用户名
+        String username = principal.getName();
+        //删除redis中token
+        umsAdminService.logout(username);
+        return new ResultVO(ResultCode.SUCCESS, "登出成功");
+    }
 
     /**
      * 更新用户数据
@@ -190,6 +206,11 @@ public class UmsAdminController {
                                               @RequestParam("pageSize")Integer pageSize){
 
         List<UmsAdmin> umsAdminLikeList = umsAdminService.getUmsAdminByNameLike(keyword, pageNum, pageSize);
+        //查询结果为空，返回没有查询到信息
+        if(umsAdminLikeList.isEmpty()){
+            return new ResultVO(ResultCode.FAILED.getCode(),"没有查询到与输入相似的用户名或者姓名",null);
+        }
+        //查询成功
         return new ResultVO(ResultCode.SUCCESS,umsAdminLikeList);
     }
 }
