@@ -89,7 +89,7 @@ public class JWTManager {
                     .parseClaimsJws(token)
                     .getBody();
         }catch (JwtException e){
-            log.info("JWT格式解析失败：{}",token);
+            log.info("JWT格式解析失败：{}",e.getMessage());
         }
         return claims;
     }
@@ -113,7 +113,7 @@ public class JWTManager {
                     .parseClaimsJws(token)
                     .getBody();
         }catch (JwtException e){
-            log.info("JWT格式解析失败：{}",token);
+            log.info("JWT格式解析失败：{}",e.getMessage());
         }
         return claims;
     }

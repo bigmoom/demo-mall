@@ -8,18 +8,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90fc72dd-899b-44ec-8dd1-fc4145b33b5e" name="Default Changelist" comment="继续完成UmsAdmin模块接口">
+    <list default="true" id="90fc72dd-899b-44ec-8dd1-fc4145b33b5e" name="Default Changelist" comment="新增logout接口，登出接口,refreshtoken接口">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/controller/UmsAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/controller/UmsAdminController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/UmsAdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/UmsAdminService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/impl/UmsAdminServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/java/com/cwh/mall/service/impl/UmsAdminServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-admin/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/config/BaseRedisCacheConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/config/BaseRedisCacheConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-common/src/main/java/com/cwh/mall/common/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-mbg/src/main/java/com/cwh/mall/mbg/mapper/UmsAdminMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-mbg/src/main/java/com/cwh/mall/mbg/mapper/UmsAdminMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-mbg/src/main/resources/mapper/UmsAdminMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-mbg/src/main/resources/mapper/UmsAdminMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-security/src/main/java/com/cwh/mall/security/component/JWTManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-security/src/main/java/com/cwh/mall/security/component/JWTManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mall-security/src/main/java/com/cwh/mall/security/component/LoginFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-security/src/main/java/com/cwh/mall/security/component/LoginFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,13 +34,13 @@
       <list>
         <option value="generatorConfig" />
         <option value="generator" />
-        <option value="Interface" />
         <option value="Mybatic Config" />
         <option value="spring-beans.schema" />
         <option value="Tag Library Descriptor" />
         <option value="logback-spring" />
         <option value="JUnit5 Test Class" />
         <option value="AnnotationType" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -282,7 +281,10 @@
       <workItem from="1626859778556" duration="3590000" />
       <workItem from="1626915113702" duration="35636000" />
       <workItem from="1627011556187" duration="3443000" />
-      <workItem from="1627019846251" duration="12265000" />
+      <workItem from="1627019846251" duration="12543000" />
+      <workItem from="1627261129330" duration="4182000" />
+      <workItem from="1627265331923" duration="9813000" />
+      <workItem from="1627282595146" duration="26930000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <created>1626257055924</created>
@@ -333,7 +335,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626949332568</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="新增logout接口，登出接口,refreshtoken接口">
+      <created>1627035531355</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1627035531355</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -361,12 +370,14 @@
     <MESSAGE value="添加ELK模块" />
     <MESSAGE value="增加校验器和缓存keyGenerator修改" />
     <MESSAGE value="继续完成UmsAdmin模块接口" />
-    <option name="LAST_COMMIT_MESSAGE" value="继续完成UmsAdmin模块接口" />
+    <MESSAGE value="新增logout接口，登出接口,refreshtoken接口" />
+    <option name="LAST_COMMIT_MESSAGE" value="新增logout接口，登出接口,refreshtoken接口" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="java.util.concurrent.ConcurrentHashMap$Node" memberName="next" />
+        <PinnedItemInfo parentTag="org.springframework.security.authentication.InsufficientAuthenticationException" memberName="cause" />
       </pinned-members>
     </pin-to-top-manager>
   </component>

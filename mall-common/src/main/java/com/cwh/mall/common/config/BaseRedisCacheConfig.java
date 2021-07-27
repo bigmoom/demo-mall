@@ -1,6 +1,8 @@
 package com.cwh.mall.common.config;
 
 import com.cwh.mall.common.domain.bo.BaseRedisProperties;
+import com.cwh.mall.common.service.RedisService;
+import com.cwh.mall.common.service.impl.RedisServiceImpl;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -131,20 +133,22 @@ public abstract class BaseRedisCacheConfig extends CachingConfigurerSupport {
             public void handleCacheGetError(RuntimeException e, Cache cache, Object o) {
                 //判断是不是连接问题，若是连接问题则不抛出异常去数据库查询
                 //不过会等待connectionTime
-                if(e instanceof JedisConnectionException || e instanceof RedisConnectionFailureException){
-                    handlerRedisCacheErrorException(e,cache,o);
-                }else {
-                    throw e;
-                }
+                //if(e instanceof JedisConnectionException || e instanceof RedisConnectionFailureException){
+                //    handlerRedisCacheErrorException(e,cache,o);
+                //}else {
+                //    throw e;
+                //}
+                handlerRedisCacheErrorException(e, cache, o);
             }
 
             @Override
             public void handleCachePutError(RuntimeException e, Cache cache, Object o, Object o1) {
-                if(e instanceof JedisConnectionException || e instanceof RedisConnectionFailureException){
-                    handlerRedisCacheErrorException(e,cache,o);
-                }else {
-                    throw e;
-                }
+                //if(e instanceof JedisConnectionException || e instanceof RedisConnectionFailureException){
+                //    handlerRedisCacheErrorException(e,cache,o);
+                //}else {
+                //    throw e;
+                //}
+                handlerRedisCacheErrorException(e, cache, o);
 
             }
             //为保证一致性继续抛出异常
@@ -167,6 +171,9 @@ public abstract class BaseRedisCacheConfig extends CachingConfigurerSupport {
         log.error("redis异常：cacheName:[{}],key=[{}]",cache==null ? "unknown":cache.getName(),key);
     }
 
-
+    @Bean
+    public RedisService redisService(){
+        return new RedisServiceImpl();
+    }
 
 }

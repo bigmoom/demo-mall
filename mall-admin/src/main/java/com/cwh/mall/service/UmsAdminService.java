@@ -8,6 +8,7 @@ import com.cwh.mall.mbg.model.UmsResource;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 后台用户管理Service
@@ -27,7 +28,9 @@ public interface UmsAdminService {
 
     UmsAdmin getAdminById(Long id);
 
-    String login(UmsAdminLoginParam umsAdminLoginParam);
+    Map<String,Object> login(UmsAdminLoginParam umsAdminLoginParam);
+
+    Map<String,Object> refreshToken(String refreshToken);
 
     UmsAdmin updateUmsAdmin(UmsAdmin umsAdmin);
 
@@ -37,7 +40,7 @@ public interface UmsAdminService {
 
     List<UmsAdmin> getUmsAdminByNameLike(String name, Integer pageNum, Integer pageSize);
 
-    void insertTokenToRedis(String key,String tokenHead, String token);
-
     void logout(String username);
+
+    Boolean updateUmsAdminRole(Long umsAdminId, Long umsRoleId);
 }

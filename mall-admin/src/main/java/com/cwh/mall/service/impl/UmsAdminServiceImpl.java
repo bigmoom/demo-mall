@@ -1,6 +1,7 @@
 package com.cwh.mall.service.impl;
 
 import com.cwh.mall.bo.UserDetail;
+import com.cwh.mall.common.annotation.CheckRedisConnnection;
 import com.cwh.mall.common.config.BaseKeyGenerator;
 import com.cwh.mall.common.util.RequestUtil;
 import com.cwh.mall.config.UmsAdminIdKeyGenerator;
@@ -13,11 +14,15 @@ import com.cwh.mall.mbg.model.UmsAdminLoginLog;
 import com.cwh.mall.mbg.model.UmsMenu;
 import com.cwh.mall.mbg.model.UmsResource;
 import com.cwh.mall.security.component.JWTManager;
+import com.cwh.mall.service.RefreshTokenRedisService;
+import com.cwh.mall.service.UmsAdminRedisService;
 import com.cwh.mall.service.UmsAdminService;
 import com.cwh.mall.mbg.mapper.UmsAdminMapper;
 import com.cwh.mall.mbg.model.UmsAdmin;
 import com.github.pagehelper.PageHelper;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +33,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,10 +49,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -87,17 +90,25 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     @Autowired
     private UmsAdminLoginLogMapper umsAdminLoginLogMapper;
 
+    @Autowired
+    private UmsAdminRedisService umsAdminRedisService;
+
     /**
      *自调用以避免方法内调用缓存不生效
      */
     @Autowired
     private UmsAdminServiceImpl umsAdminService;
 
+    //@Autowired
+    //private RedisTemplate<String, String> redisTemplate;
+
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private RefreshTokenRedisService refreshTokenRedisService;
 
     @Value("${security.jwt.refreshTokenExpiration}")
     private Long refreshTokenExpiration;
+
+
 
 
 
@@ -113,6 +124,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         if(umsAdmin == null){
             throw new UsernameNotFoundException("用户没有找到");
         }
+        //umsAdminRedisService.setAdmin(umsAdmin);
         return umsAdmin;
     }
 
@@ -174,6 +186,11 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
     }
 
+    /**
+     * 根据用户id获取用户
+     * @param id
+     * @return
+     */
     @Override
     @Cacheable(cacheNames = "umsAdmin", keyGenerator = "umsAdminIdKeyGenerator")
     public UmsAdmin getAdminById(Long id) {
@@ -189,80 +206,101 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     /**
      * 登录操作
      * 添加登录记录
-     * 将token存储到redis中
      * @param umsAdminLoginParam 包括用户名，密码
-     * @return
+     * @return 返回token, refreshToken, 过期时间戳
      */
     @Override
-    public String login(UmsAdminLoginParam umsAdminLoginParam) {
+    @CheckRedisConnnection
+    public Map<String,Object> login(UmsAdminLoginParam umsAdminLoginParam) {
         String username = umsAdminLoginParam.getUsername();
         String password = umsAdminLoginParam.getPassword();
 
         String token = null;
+        String refreshToken = null;
+        Map<String,Object> tokenMap = new HashMap<>();
+        Date expireDate = new Date(System.currentTimeMillis() + expiration*1000);
         //进行密码校验
-        try{
-            UserDetails userDetails = this.loadUserByUsername(username);
-            if(!passwordEncoder.matches(password,userDetails.getPassword())){
-                throw new BadCredentialsException("密码错误");
-            }
-            //判断用户账号状态是否为可用状态
-            if(!userDetails.isEnabled()){
-                throw new DisabledException("账户不可用");
-            }
-            //设置上下文中authentication
-            //密码不明文放在上下文中，所以设置为Null
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            token = jwtManager.generateToken(username);
-
-            //检查是否已经存在refreshtoken
-            //如果存在，则设置延长refreshtoken的过期时间
-            //如果不存在，则创建refreshtoken并存储在redis中
-
-            StringJoiner stringJoiner = new StringJoiner(":");
-            stringJoiner.add("token");
-            stringJoiner.add(username);
-
-            insertTokenToRedis(stringJoiner.toString(),tokenHead,token);
-
-            //添加登录记录
-            insertLoginRecord(username);
-        }catch (AuthenticationException e){
-            log.error("登录异常：{}",e.getMessage());
+        UserDetails userDetails = this.loadUserByUsername(username);
+        if(!passwordEncoder.matches(password,userDetails.getPassword())){
+            throw new BadCredentialsException("密码错误");
         }
+        //判断用户账号状态是否为可用状态
+        if(!userDetails.isEnabled()){
+            throw new DisabledException("账户不可用");
+        }
+        //设置上下文中authentication
+        //密码不明文放在上下文中，所以设置为Null
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return token;
+        token = jwtManager.generateToken(username);
+        //refreshToken用于获取新的token
+        refreshToken = jwtManager.generateRefreshToken(username);
+        //将refreshToken存储在redis中，以保持更新状态
+        StringJoiner stringJoiner = new StringJoiner(":");
+        stringJoiner.add("refreshToken");
+        stringJoiner.add(username);
+        //redisTemplate.opsForValue().set(stringJoiner.toString(),refreshToken,refreshTokenExpiration,TimeUnit.SECONDS);
 
+        refreshTokenRedisService.setRefreshToken(stringJoiner.toString(),refreshToken,refreshTokenExpiration,TimeUnit.SECONDS);
+        //token过期时间,较短，在时间戳之前直接携带token访问功能接口
+        // 时间戳之后携带refreshToken访问refresh接口获取新的token
+        tokenMap.put("token",token);
+        tokenMap.put("refreshToken", refreshToken);
+        tokenMap.put("expireDate", expireDate);
+        //检查是否已经存在refreshtoken
+        //如果存在，则设置延长refreshtoken的过期时间
+        //如果不存在，则创建refreshtoken并存储在redis中
+
+        //StringJoiner stringJoiner = new StringJoiner(":");
+        //stringJoiner.add("token");
+        //stringJoiner.add(username);
+        //
+        //insertTokenToRedis(stringJoiner.toString(),tokenHead,token);
+
+        //checkAndGenerateRefreshToken(username);
+        //添加登录记录
+        insertLoginRecord(username);
+
+        return tokenMap;
     }
 
     /**
      * 检查是否存在refreshToken
+     * 这里refreshToken不考虑jwt中的过期时间，以redis中的过期时间为准
      * 若不存在生成新refreshToken
      * 存在则延长过期时间
      * @param username
      */
-    private void checkAndGenerateRefreshToken(String username){
-        //redis中存储的键
-        StringJoiner stringJoiner = new StringJoiner(":");
-        stringJoiner.add("refreshToken");
-        stringJoiner.add(username);
-        String key = stringJoiner.toString();
-
-        String refreshToken = redisTemplate.opsForValue().get(key);
-        //不存在refreshToken，创建refreshToken
-        if(refreshToken == null) {
-            refreshToken = jwtManager.generateRefreshToken(username);
-        }
-        //}else {
-        //    //Claims claims = jwtManager.parseRefreshToken(refreshToken);
-        //    //claims.setExpiration(new Date(System.currentTimeMillis()+refreshTokenExpiration*1000));
-        //    //TODO 更新refreshToken
-        //
-        //}
-        redisTemplate.opsForValue().set(key,refreshToken,refreshTokenExpiration,TimeUnit.SECONDS);
-
-    }
+    //private void checkAndGenerateRefreshToken(String username){
+    //    //redis中存储的键
+    //    StringJoiner stringJoiner = new StringJoiner(":");
+    //    stringJoiner.add("refreshToken");
+    //    stringJoiner.add(username);
+    //    String key = stringJoiner.toString();
+    //
+    //    ValueOperations<String, String> valueOperations= redisTemplate.opsForValue();
+    //
+    //    String refreshToken = valueOperations.get(key);
+    //    //不存在refreshToken，创建refreshToken
+    //    if(refreshToken == null) {
+    //        refreshToken = jwtManager.generateRefreshToken(username);
+    //        //valueOperations.set(key,refreshToken,refreshTokenExpiration,TimeUnit.SECONDS);
+    //    }else {
+    //        try {
+    //            Claims claims = jwtManager.parseRefreshToken(refreshToken);
+    //            if(claims == null){
+    //                //非法refreshToken，直接删除
+    //                valueOperations.getOperations().delete(key);
+    //            }
+    //        }catch (ExpiredJwtException e){
+    //        //    refreshToken过期,不予处理，以redis中过期时间为准
+    //        }
+    //    }
+    //    //存在则直接延长过期时间
+    //    valueOperations.set(key,refreshToken,refreshTokenExpiration,TimeUnit.SECONDS);
+    //
+    //}
     /**
      * 登出操作
      * 即设置redis中token值为null
@@ -271,27 +309,68 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     @Override
     public void logout(String username){
         StringJoiner stringJoiner = new StringJoiner(":");
-        stringJoiner.add("token");
+        stringJoiner.add("refreshToken");
         stringJoiner.add(username);
-        redisTemplate.opsForValue().set(stringJoiner.toString(),"");
+        //redisTemplate.opsForValue().getOperations().delete(stringJoiner.toString());
+        refreshTokenRedisService.deleteRefreshToken(stringJoiner.toString());
     }
 
     /**
-     * 将token放到redis中
-     * @param tokenHead token头，例如Bear
-     * @param token token
+     * 更新用户角色id
+     * @param umsAdminId 用户id
+     * @param umsRoleId 角色id
+     * @return true为更新成功,false为失败
      */
     @Override
-    public void insertTokenToRedis(String key,String tokenHead, String token) {
+    public Boolean updateUmsAdminRole(Long umsAdminId, Long umsRoleId) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(tokenHead);
-        stringBuilder.append(" ");
-        stringBuilder.append(token);
+            return true;
+    }
 
-        redisTemplate.opsForValue().set(key,stringBuilder.toString(),expiration*1000, TimeUnit.MILLISECONDS);
+    /**
+     * 刷新token
+     * 校验传入的refreshToken
+     * 如果合法且未过期，颁发新的token
+     * @param refreshToken
+     * @return
+     */
+    @Override
+    public Map<String,Object> refreshToken(String refreshToken){
+
+        Map<String,Object> tokenMap = new HashMap<>();
+
+        Claims claims = jwtManager.parseRefreshToken(refreshToken);
+        //不合法refreshtoken或者token已经过期
+        if(claims == null || claims.getExpiration().before(new Date())){
+            return null;
+        }else {
+        //    合法，返回新的token
+            String token = jwtManager.generateToken(claims.getSubject());
+            Date expireDate = new Date(System.currentTimeMillis() + expiration*1000);
+            tokenMap.put("token",token);
+            tokenMap.put("expireDate",expireDate);
+            return tokenMap;
+        }
 
     }
+
+
+    ///**
+    // * 将token放到redis中
+    // * @param tokenHead token头，例如Bear
+    // * @param token token
+    // */
+    //@Override
+    //public void insertTokenToRedis(String key,String tokenHead, String token) {
+    //
+    //    StringBuilder stringBuilder = new StringBuilder();
+    //    stringBuilder.append(tokenHead);
+    //    stringBuilder.append(" ");
+    //    stringBuilder.append(token);
+    //
+    //    redisTemplate.opsForValue().set(key,stringBuilder.toString(),expiration*1000, TimeUnit.MILLISECONDS);
+    //
+    //}
 
     /**
      * 添加用户的登录记录
@@ -391,6 +470,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         keyword = "%" + keyword + "%";
         return umsAdminMapper.selectByLikeName(keyword);
     }
+
 
 
 

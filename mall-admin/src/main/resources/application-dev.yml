@@ -22,7 +22,7 @@ spring:
 #    数据库索引，默认为0
     database: 0
 #    redis host ip
-    host: 192.168.56.131
+    host: 192.168.56.130
 #    redis  连接端口
     port: 6379
 #    服务器连接密码（默认为空）
@@ -53,7 +53,7 @@ security:
 #   设置JWT开头
     tokenHead: 'Bearer'
 #   用于生成refreshtoken的秘钥
-    refreshSecurityKey: cwh
+    refreshSecurityKey: cwh971111
 #   refreshToken过期时间(60*60*24*7)
     refreshTokenExpiration: 604800
 #   refreshToken延长过期时间
@@ -62,6 +62,7 @@ security:
     urls:
       - /admin/login
       - /admin/register
+      - /admin/refreshToken
 #      - /admin/logout
 #      - /admin/**
       - /swagger-resources/**

@@ -3,6 +3,7 @@ package com.cwh.mall.security.component;
 import com.cwh.mall.common.domain.bo.ResultCode;
 import com.cwh.mall.common.domain.vo.ResultVO;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.lettuce.core.RedisConnectionException;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
@@ -74,31 +75,19 @@ public class LoginFilter extends OncePerRequestFilter {
                 String userName = claims.getSubject();
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
                 log.info("checking token success && userName:{}",userName);
-                //判断token是否过期
-                //添加判断，token是否在redis中,以实现登出是使jwt无效
-                String key = "token:" + userName;
-                String redisToken = (redisTemplate.opsForValue().get(key).split(" "))[1];
-                if(redisToken.equals(token)){
-                    //密码不明文放在上下文中，所以设置为Null
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    //设置authentication
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }else {
-                    throw new AccountExpiredException("token已过期,请重新登录");
+                //密码不明文放在上下文中，所以设置为Null
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+                //设置authentication
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                //添加判断，refreshtoken是否在redis中,以实现登出是使jwt无效
+                String key = "refreshToken:" + userName;
+                String refreshToken = redisTemplate.opsForValue().get(key);
+                if(refreshToken == null){
+                    throw new AccountExpiredException("token已过期，请重新登录");
                 }
             }
         }
         filterChain.doFilter(request,response);
     }
 
-
-    private void returnRefreshToken(HttpServletResponse response, Map<String,String>token) throws IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        PrintWriter writer = response.getWriter();
-        writer.println(JSONObject.toJSONString(token));
-        writer.flush();
-        writer.close();
-    }
 }

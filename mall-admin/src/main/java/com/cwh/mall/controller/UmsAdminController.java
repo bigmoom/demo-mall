@@ -76,25 +76,41 @@ public class UmsAdminController {
     }
 
     /**
-     * 用户登录，成功后返回token
+     * 用户登录，成功后返回token,refreshToken,expireDate，tokenHeader
      * @param umsAdminLoginParam
      * @return
      */
-    @ApiOperation(value = "用户登录", notes = "返回token，且tokenHeader = Bear")
+    @ApiOperation(value = "用户登录", notes = "返回token,refreshToken,expireDate，tokenHeader ")
     @PostMapping("/login")
     public ResultVO login(@Validated @RequestBody UmsAdminLoginParam umsAdminLoginParam){
-        String token = umsAdminService.login(umsAdminLoginParam);
-        //token为null即登录失败
-        if(token == null){
-            return new ResultVO(ResultCode.VALIDATE_FAILED.getCode(),"账号密码错误",null);
-        }
 
-        Map<String,String> tokenMap = new HashMap<>();
-        tokenMap.put("token",token);
-        tokenMap.put("tokenHead",tokenHead);
-
+        Map<String,Object> tokenMap = umsAdminService.login(umsAdminLoginParam);
+        //添加token Header
+        tokenMap.put("tokenHeader",tokenHead);
         return new ResultVO<>(tokenMap);
     }
+
+
+    /**
+     * 刷新token
+     * 检验refreshToken合法性以及是否过期
+     * 检验通过颁布新的token
+     * @param refreshToken
+     * @return
+     */
+    @ApiOperation(value = "刷新token", notes = "检查传入的refreshToken是否过期或者")
+    @GetMapping("/refreshToken")
+    public ResultVO refreshToken(@RequestParam("refreshToken")String refreshToken){
+
+        Map<String,Object> tokenMap = umsAdminService.refreshToken(refreshToken);
+
+        if(tokenMap == null){
+            return new ResultVO(ResultCode.FAILED, "refreshToken已过期或者不合法");
+        }else {
+            return new ResultVO(tokenMap);
+        }
+    }
+
 
     @ApiOperation(value = "登出操作", notes = "设置redis中token值为空字符串,实现jwt失效")
     @PostMapping("/logout")
